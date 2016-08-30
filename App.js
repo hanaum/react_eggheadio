@@ -1,41 +1,66 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 class App extends React.Component {
   constructor() {
     // allow constructor to know what 'this' is.
     super();
     this.state = { 
-      txt: 'this is the state text',
-      cat: 0
+      red: 0,
+      green: 0,
+      blue: 0
     };
     this.update = this.update.bind(this)
   }
 
   update(e) {
     this.setState({
-      txt: e.target.value
+      red: ReactDOM.findDOMNode(this.refs.red.refs.inp).value,
+      green: ReactDOM.findDOMNode(this.refs.green.refs.inp).value,
+      blue: ReactDOM.findDOMNode(this.refs.blue.refs.inp).value
     })
   }
   render() {
     // updating state.txt of the parent component
     return (
         <div>
-          <Widget txt={this.state.txt} update={this.update} />
-          <Widget txt={this.state.txt} update={this.update} />
-          <Widget txt={this.state.txt} update={this.update} />
+          {this.state.txt}
+          <hr />
+          <Slider ref="red" update={this.update} />
+          {this.state.red}
+          <hr />
+          <Slider ref="green" update={this.update} />
+          {this.state.green}
+          <hr />
+          <Slider ref="blue" update={this.update} />
+          {this.state.blue}
+          <hr />
         </div>
       );
   }
 }
 
-// a stateless component
-const Widget = (props) => {
+class Slider extends React.Component {
+  render() {
     return (
         <div>
-          <input type="text" 
-            onChange={props.update} />
-          <h1>{props.txt}</h1>
+          <input ref="inp" type="range" 
+            min="0"
+            max="255"
+            onChange={this.props.update} />
         </div>
-      );
+      ); 
+  }
 }
+
+// a stateless component
+// const Widget = (props) => {
+//     return (
+//         <div>
+//           <input type="text" 
+//             onChange={props.update} />
+//           <h1>{props.txt}</h1>
+//         </div>
+//       );
+// }
 
 export default App
